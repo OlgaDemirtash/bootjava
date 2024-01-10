@@ -6,6 +6,7 @@ spring:
     # https://stackoverflow.com/a/67678945/548473
     defer-datasource-initialization: true
     hibernate:
+
       ddl-auto: create
     properties:
       #  http://docs.jboss.org/hibernate/orm/5.3/userguide/html_single/Hibernate_User_Guide.html#configurations
@@ -29,7 +30,7 @@ spring:
     username: sa
     password:
 
-# Jackson Serialization Issue Resolver
+  # Jackson Serialization Issue Resolver
   jackson.visibility:
     field: any
     getter: none

@@ -40,10 +40,6 @@ import static ru.javaops.bootjava.error.ErrorType.*;
 @Slf4j
 public class RestExceptionHandler {
     public static final String ERR_PFX = "ERR# ";
-
-    @Getter
-    private final MessageSource messageSource;
-
     //    https://stackoverflow.com/a/52254601/548473
     static final Map<Class<? extends Throwable>, ErrorType> HTTP_STATUS_MAP = new LinkedHashMap<>() {
         {
@@ -66,6 +62,15 @@ public class RestExceptionHandler {
             put(AccessDeniedException.class, FORBIDDEN);
         }
     };
+    @Getter
+    private final MessageSource messageSource;
+
+    //  https://stackoverflow.com/a/65442410/548473
+    @NonNull
+    private static Throwable getRootCause(@NonNull Throwable t) {
+        Throwable rootCause = NestedExceptionUtils.getRootCause(t);
+        return rootCause != null ? rootCause : t;
+    }
 
     @ExceptionHandler(BindException.class)
     ProblemDetail bindException(BindException ex, HttpServletRequest request) {
@@ -122,12 +127,5 @@ public class RestExceptionHandler {
                 .build().updateAndGetBody(messageSource, LocaleContextHolder.getLocale());
         additionalParams.forEach(pd::setProperty);
         return pd;
-    }
-
-    //  https://stackoverflow.com/a/65442410/548473
-    @NonNull
-    private static Throwable getRootCause(@NonNull Throwable t) {
-        Throwable rootCause = NestedExceptionUtils.getRootCause(t);
-        return rootCause != null ? rootCause : t;
     }
 }

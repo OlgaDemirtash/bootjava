@@ -16,7 +16,7 @@ import java.util.Date;
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 public class VoteId implements Serializable {
 
-    private Date date = new Date();
+    private Date registered = new Date();
 
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)

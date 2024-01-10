@@ -19,10 +19,6 @@ public class AuthUser extends org.springframework.security.core.userdetails.User
         this.user = user;
     }
 
-    public int id() {
-        return user.id();
-    }
-
     public static AuthUser safeGet() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth == null) {
@@ -41,6 +37,10 @@ public class AuthUser extends org.springframework.security.core.userdetails.User
 
     public static int authId() {
         return get().id();
+    }
+
+    public int id() {
+        return user.id();
     }
 
     public boolean hasRole(Role role) {
