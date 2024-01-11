@@ -7,6 +7,9 @@ import ru.javaops.bootjava.model.Menu;
 import ru.javaops.bootjava.repository.MenuRepository;
 import ru.javaops.bootjava.repository.UserRepository;
 
+import java.time.LocalDate;
+import java.util.List;
+
 @Service
 @AllArgsConstructor
 public class MenuService {
@@ -17,5 +20,9 @@ public class MenuService {
     public Menu save(Menu menu) {
         //restaurant.setUser(userRepository.getExisted(userId));
         return menuRepository.save(menu);
+    }
+
+    public List<Menu> getAllByDate(LocalDate registered, int restaurantId) {
+        return menuRepository.findAllByRegisteredAndRestaurantIdOrderById(registered, restaurantId);
     }
 }

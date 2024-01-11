@@ -1,34 +1,30 @@
 package ru.javaops.bootjava.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.persistence.Column;
-import jakarta.persistence.EmbeddedId;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotBlank;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDate;
+
 @Entity
-@Table(name = "menu")
+@Table(name = "menu", uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"registered", "restaurant_id"})
+})
 @Getter
 @Setter
-public class Menu {
-
-    //@Column(name = "menu_id", nullable = false, updatable = false)
+public class Menu extends NamedEntity {
+    @Column(name = "registered", nullable = false, columnDefinition = "timestamp default now()", updatable = false)
     @NotNull
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    @EmbeddedId
-    private MenuId menuId;
+    private LocalDate registered;
 
-    @Column(name = "dish", nullable = false, unique = true)
-    @NotBlank
-    @Size(max = 128)
-    private String dish;
+    @ManyToOne
+    @JoinColumn(name = "restaurant_id", referencedColumnName = "id", nullable = false)
+    private Restaurant restaurant;
 
-    @Column(name = "price", nullable = false, unique = false)
+    @Column(name = "price", nullable = false)
     @NotNull
     private Integer price;
 }

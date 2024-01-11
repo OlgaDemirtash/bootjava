@@ -13,7 +13,7 @@ import lombok.Setter;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 @Entity
@@ -31,17 +31,16 @@ public class Restaurant extends NamedEntity {
     @Column(name = "registered", nullable = false, columnDefinition = "timestamp default now()", updatable = false)
     @NotNull
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    private Date registered = new Date();
+    private LocalDate registered;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "menuId.restaurant")
-//, cascade = CascadeType.REMOVE, orphanRemoval = true)
-    @OrderBy("menuId.registered DESC")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant")//, cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @OrderBy("registered DESC")
     @OnDelete(action = OnDeleteAction.CASCADE) //https://stackoverflow.com/a/44988100/548473
     @Schema(hidden = true)
     private List<Menu> menus;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant")//, cascade = CascadeType.REMOVE, orphanRemoval = true)
-    @OrderBy("voteId.registered DESC")
+    @OrderBy("registered DESC")
     @OnDelete(action = OnDeleteAction.CASCADE) //https://stackoverflow.com/a/44988100/548473
     @Schema(hidden = true)
     private List<Vote> votes;
