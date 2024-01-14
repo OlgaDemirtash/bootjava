@@ -1,5 +1,7 @@
 package ru.javaops.bootjava.web.menu;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
@@ -18,12 +20,16 @@ import java.util.List;
 @RequestMapping(value = MenuController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 @Slf4j
 @AllArgsConstructor
+@Tag(name = "MenuController", description = "Controller for view restaurant menu")
 public class MenuController {
     static final String REST_URL = "/api/restaurants/";
+    static final String REST_URL_MENU = "/menu";
+
     private final MenuRepository repository;
     private final MenuService service;
 
     @GetMapping("/{id}/menu")
+    @Operation(summary = "Get current menu for the restaurant ID", description = "Provide an restaurant ID to get restaurant menu details")
     public List<Menu> getCurrentMenu(@PathVariable int id) {
         log.info("get menu for today");
         return service.getAllByDate(LocalDate.now(), id);

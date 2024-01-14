@@ -1,8 +1,4 @@
-<img src="http://javaops.ru/static/img/logo/javaops_30.png" width="223"/>
-
-Открытый курс для всех желающих приобщиться к живой современной разработке на Java
-
-# [Разработка Spring Boot 3.x HATEOAS приложения (BootJava)](http://javaops.ru/view/bootjava?ref=gh)
+# [Разработка для диплома к курсу TopJava](http://javaops.ru/view/bootjava?ref=gh)
 
 ## [Программа](http://javaops.ru/view/bootjava#program)
 
@@ -19,7 +15,8 @@
 Креденшелы:
 
 ```
-User:  user@yandex.ru / password
-Admin: admin@gmail.com / admin
-Guest: guest@gmail.com / guest
+User1:  user1@yandex.ru / password
+User2:  user2@yandex.ru / password
+Admin: admin1@gmail.com / admin
+Guest: guest1@gmail.com / guest
 ```

@@ -1,5 +1,7 @@
 package ru.javaops.bootjava.web.menu;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,41 +26,41 @@ import java.util.Optional;
 @RequestMapping(value = AdminMenuController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 @Slf4j
 @AllArgsConstructor
+@Tag(name = "AdminMenuController", description = "Controller for edit restaurant menu")
 public class AdminMenuController {
-    static final String REST_URL = "/api/admin/restaurants/";
+    static final String REST_URL = "/api/admin/menu/";
+
     private final MenuRepository repository;
     private final RestaurantRepository restaurantRepository;
     private final MenuService service;
 
-    @GetMapping("/{id}/menu")
-    public List<Menu> getCurrentMenu(@PathVariable int id) {
-        log.info("get menu for today");
-        return service.getAllByDate(LocalDate.now(), id);
-    }
-
-    @GetMapping("/{id}/menu/{position}")
-    public Menu getPosition(@PathVariable int id, @PathVariable int position) {
-        log.info("get menu position {} ", position);
-        Optional<Menu> menuPosition = Optional.ofNullable(repository.getExisted(position));
+    @GetMapping("/{id}")
+    @Operation(summary = "Get menu position", description = "Provide an ID to get menu position details")
+    public Menu getMenuPosition(@PathVariable int id) {
+        log.info("get menu position {} ", id);
+        Optional<Menu> menuPosition = Optional.ofNullable(repository.getExisted(id));
         return menuPosition.orElseThrow(() -> new NotFoundException("Position with id=" + id + " not found"));
     }
 
-    @DeleteMapping("/{id}/menu/{position}")
+
+    @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable int id, @Valid @PathVariable int position) {
-        log.info("delete position from menu {}", position);
-        repository.deleteExisted(position);
+    @Operation(summary = "Delete menu position", description = "Provide ID position to delete")
+    public void delete(@PathVariable int id) {
+        log.info("delete position from menu {}", id);
+        repository.deleteExisted(id);
     }
 
-    @PostMapping(value = "/{id}/menu", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Menu> createWithLocation(@Valid @RequestBody Menu menu, @PathVariable int id) {
+    @PostMapping(value = "/", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @Operation(summary = "Create menu position", description = "Provide menu details and restaurant ID to create")
+    public ResponseEntity<Menu> createWithLocation(@Valid @RequestBody Menu menu) {
         log.info("create menu position {} ", menu);
         ValidationUtil.checkNew(menu);
         menu.setRegistered(LocalDate.now());
-        menu.setRestaurant(restaurantRepository.getReferenceById(id));
+        menu.setRestaurant(restaurantRepository.getExisted(menu.getRestaurant().getId()));
         Menu created = repository.save(menu);
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path(REST_URL + "/{position}")
+                .path(REST_URL + "/{id}")
                 .buildAndExpand(created.getId()).toUri();
         return ResponseEntity.created(uriOfNewResource).body(created);
     }

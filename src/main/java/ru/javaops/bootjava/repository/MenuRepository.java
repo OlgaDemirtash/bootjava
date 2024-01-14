@@ -14,4 +14,6 @@ public interface MenuRepository extends BaseRepository<Menu> {
     List<Menu> findAllByRegisteredAndRestaurantIdOrderById(LocalDate registered, int restaurant_id);
 
     List<Menu> findAllByRestaurantId(int restaurant_id);
+
+    boolean existsByRestaurantIdAndRegistered(int restaurantId, LocalDate localDate);
 }

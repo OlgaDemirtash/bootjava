@@ -12,26 +12,27 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+import ru.javaops.bootjava.validation.NoHtml;
 
 import java.time.LocalDate;
 import java.util.List;
 
 @Entity
-@Table(name = "restaurant")
+@Table(name = "restaurant",  uniqueConstraints = @UniqueConstraint(name = "unique_restaurant_name", columnNames = {"name"}))
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Restaurant extends NamedEntity {
-
     @Column(name = "description", nullable = false)
     @NotBlank
     @Size(max = 256)
+    @NoHtml
     private String description;
 
-    @Column(name = "registered", nullable = false, columnDefinition = "timestamp default now()", updatable = false)
-    @NotNull
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    private LocalDate registered;
+//    @Column(name = "registered", nullable = false, columnDefinition = "DATE DEFAULT CURRENT_DATE", updatable = false)
+//    @NotNull
+//    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+//    private LocalDate registered;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant")//, cascade = CascadeType.REMOVE, orphanRemoval = true)
     @OrderBy("registered DESC")
@@ -45,5 +46,10 @@ public class Restaurant extends NamedEntity {
     @Schema(hidden = true)
     private List<Vote> votes;
 
+    public Restaurant(Integer id, String name, String description) {
+        super(id, name);
+        //this.registered = LocalDate.now();
+        this.description = description;
+    }
 
 }

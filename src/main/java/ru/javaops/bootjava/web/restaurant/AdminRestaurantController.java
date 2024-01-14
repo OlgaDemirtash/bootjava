@@ -1,5 +1,7 @@
 package ru.javaops.bootjava.web.restaurant;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,6 +26,7 @@ import static ru.javaops.bootjava.validation.ValidationUtil.checkNew;
 @RequestMapping(value = AdminRestaurantController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 @Slf4j
 @AllArgsConstructor
+@Tag(name = "AdminRestaurantController", description = "Controller for edit restaurant")
 public class AdminRestaurantController {
     static final String REST_URL = "/api/admin/restaurants";
 
@@ -32,19 +35,22 @@ public class AdminRestaurantController {
     private final RestaurantRepository repository;
 
     @GetMapping("/{id}")
+    @Operation(summary = "Get restaurant by ID", description = "Provide restaurant ID for get details")
     public ResponseEntity<Restaurant> get(@AuthenticationPrincipal AuthUser authUser, @PathVariable int id) {
         log.info("get restaurant {} for user {}", id, authUser.id());
-        return ResponseEntity.ofNullable(repository.getReferenceById(id));
+        return ResponseEntity.ofNullable(repository.getExisted(id));
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @Operation(summary = "Delete restaurant by ID", description = "Provide restaurant ID for deletion")
     public void delete(@AuthenticationPrincipal AuthUser authUser, @PathVariable int id) {
         log.info("delete restaurant ID {} by user {}", id, authUser.id());
         service.delete(id);
     }
 
     @GetMapping
+    @Operation(summary = "Get all restaurants", description = "Restaurant list will be provided")
     public List<Restaurant> getAll(@AuthenticationPrincipal AuthUser authUser) {
         log.info("getAll for user {}", authUser.id());
         return service.getAll();
@@ -52,6 +58,7 @@ public class AdminRestaurantController {
 
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @Operation(summary = "Update restaurant", description = "Provide restaurant details, restaurant ID")
     public void update(@AuthenticationPrincipal AuthUser authUser, @Valid @RequestBody Restaurant restaurant, @PathVariable int id) {
         int userId = authUser.id();
         log.info("update {} by user {}", restaurant, userId);
@@ -60,6 +67,7 @@ public class AdminRestaurantController {
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    @Operation(summary = "Create restaurant", description = "Provide restaurant details")
     public ResponseEntity<Restaurant> createWithLocation(@AuthenticationPrincipal AuthUser authUser, @Valid @RequestBody Restaurant restaurant) {
         int userId = authUser.id();
         log.info("create {} by user {}", restaurant, userId);

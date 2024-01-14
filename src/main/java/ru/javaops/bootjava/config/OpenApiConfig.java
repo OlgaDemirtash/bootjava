@@ -22,13 +22,13 @@ import org.springframework.context.annotation.Configuration;
                 title = "REST API documentation",
                 version = "1.0",
                 description = """
-                        Приложение по <a href='https://javaops.ru/view/bootjava'>курсу BootJava</a>
+                        Дипломный проект к курсу TopJava</a>
                         <p><b>Тестовые креденшелы:</b><br>
-                        - user@yandex.ru / password<br>
-                        - admin@gmail.com / admin<br>
-                        - guest@gmail.com / guest</p>
+                        - user1@yandex.ru / password<br>
+                        - admin1@gmail.com / admin<br>
+                        - guest1@gmail.com / guest</p>
                         """,
-                contact = @Contact(url = "https://javaops.ru/#contacts", name = "Grigory Kislin", email = "admin@javaops.ru")
+                contact = @Contact(name = "Olga Demirtash", email = "solar.olya@yandex.ru")
         ),
         security = @SecurityRequirement(name = "basicAuth")
 )

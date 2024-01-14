@@ -3,19 +3,20 @@ package ru.javaops.bootjava.model;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "menu", uniqueConstraints = {
-        @UniqueConstraint(columnNames = {"registered", "restaurant_id"})
-})
 @Getter
+@Table(name = "menu")
 @Setter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Menu extends NamedEntity {
-    @Column(name = "registered", nullable = false, columnDefinition = "timestamp default now()", updatable = false)
+    @Column(name = "registered", nullable = false, columnDefinition = "DATE DEFAULT CURRENT_DATE", updatable = false)
     @NotNull
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private LocalDate registered;
@@ -27,4 +28,11 @@ public class Menu extends NamedEntity {
     @Column(name = "price", nullable = false)
     @NotNull
     private Integer price;
+
+    public Menu(Integer id, String name, Restaurant restaurant, Integer price) {
+        super(id, name);
+        this.registered = LocalDate.now();
+        this.restaurant = restaurant;
+        this.price = price;
+    }
 }

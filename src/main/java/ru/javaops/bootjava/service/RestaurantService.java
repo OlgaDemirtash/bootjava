@@ -39,6 +39,7 @@ public class RestaurantService {
         checkNotFoundWithId(restaurantRepository.save(restaurant), restaurant.id());
     }
 
+    @Transactional
     public Restaurant create(Restaurant r) {
         Assert.notNull(r, "restaurant must not be null");
         ValidationUtil.checkNew(r);

@@ -14,4 +14,5 @@ public interface VoteRepository extends BaseRepository<Vote> {
 
     Optional<Vote> findAllByUserIdAndRegistered(int userId, LocalDate registered);
 
+    Optional<Vote> findByIdAndUserId(int id, int userId);
 }

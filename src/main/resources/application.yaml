@@ -17,7 +17,7 @@ spring:
         jdbc.batch_size: 20
   datasource:
     # ImMemory
-    url: jdbc:h2:mem:bootjava
+    url: jdbc:h2:mem:bootjava;COLLATION=CHARSET_UTF8;MODE=MYSQL;
     #    tcp: jdbc:h2:tcp://localhost:9092/mem:bootjava
     # Absolute path
     #    url: jdbc:h2:C:/projects/bootjava/db/bootjava
