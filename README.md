@@ -1,17 +1,11 @@
 # [Разработка для диплома к курсу TopJava](http://javaops.ru/view/bootjava?ref=gh)
-
-## [Программа](http://javaops.ru/view/bootjava#program)
-
-### Java приложения на самом современном и востребованном стеке: Spring Boot 3.x, Spring Data Rest/HATEOAS, Lombok, JPA, H2, ....
-
-Мы создадим с нуля основу любого современного REST веб-приложения: аутентификация и авторизация на основе ролей, регистрация пользователя в приложении, управление своим профилем и администрирование пользователей.
 -------------------------------------------------------------
-
-- Stack: [JDK 17](http://jdk.java.net/17/), Spring Boot 3.x, Lombok, H2, Caffeine Cache, SpringDoc OpenApi 2.x
+Приложение для оценки ресторанов
+- Stack: [JDK 21](http://jdk.java.net/17/), Spring Boot 3.2.X, Lombok, H2, SpringDoc OpenApi 3.x
 - Run: `mvn spring-boot:run` in root directory.
 
 -----------------------------------------------------
-[REST API documentation](http://localhost:8080/)
+[REST API documentation](http://localhost:8080/swagger-ui/index.html)
 Креденшелы:
 
 ```
