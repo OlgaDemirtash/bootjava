@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import ru.javaops.bootjava.error.NotFoundException;
@@ -16,11 +17,13 @@ import ru.javaops.bootjava.repository.MenuRepository;
 import ru.javaops.bootjava.repository.RestaurantRepository;
 import ru.javaops.bootjava.service.MenuService;
 import ru.javaops.bootjava.validation.ValidationUtil;
+import ru.javaops.bootjava.web.AuthUser;
 
 import java.net.URI;
 import java.time.LocalDate;
-import java.util.List;
 import java.util.Optional;
+
+import static ru.javaops.bootjava.validation.ValidationUtil.assureIdConsistent;
 
 @RestController
 @RequestMapping(value = AdminMenuController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -28,8 +31,7 @@ import java.util.Optional;
 @AllArgsConstructor
 @Tag(name = "AdminMenuController", description = "Controller for edit restaurant menu")
 public class AdminMenuController {
-    static final String REST_URL = "/api/admin/menu/";
-
+    static final String REST_URL = "/api/admin/menu";
     private final MenuRepository repository;
     private final RestaurantRepository restaurantRepository;
     private final MenuService service;
@@ -42,7 +44,6 @@ public class AdminMenuController {
         return menuPosition.orElseThrow(() -> new NotFoundException("Position with id=" + id + " not found"));
     }
 
-
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @Operation(summary = "Delete menu position", description = "Provide ID position to delete")
@@ -51,7 +52,7 @@ public class AdminMenuController {
         repository.deleteExisted(id);
     }
 
-    @PostMapping(value = "/", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Create menu position", description = "Provide menu details and restaurant ID to create")
     public ResponseEntity<Menu> createWithLocation(@Valid @RequestBody Menu menu) {
         log.info("create menu position {} ", menu);
@@ -63,5 +64,15 @@ public class AdminMenuController {
                 .path(REST_URL + "/{id}")
                 .buildAndExpand(created.getId()).toUri();
         return ResponseEntity.created(uriOfNewResource).body(created);
+    }
+
+    @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @Operation(summary = "Update menu position", description = "Provide menu details, menu position ID")
+    public void update(@AuthenticationPrincipal AuthUser authUser, @Valid @RequestBody Menu menu, @PathVariable int id) {
+        int userId = authUser.id();
+        log.info("update menu position ID {} by user {}", id, userId);
+        assureIdConsistent(menu, id);
+        service.update(menu);
     }
 }

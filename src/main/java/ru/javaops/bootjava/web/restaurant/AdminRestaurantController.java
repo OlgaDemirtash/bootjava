@@ -46,7 +46,7 @@ public class AdminRestaurantController {
     @Operation(summary = "Delete restaurant by ID", description = "Provide restaurant ID for deletion")
     public void delete(@AuthenticationPrincipal AuthUser authUser, @PathVariable int id) {
         log.info("delete restaurant ID {} by user {}", id, authUser.id());
-        service.delete(id);
+        repository.deleteExisted(id);
     }
 
     @GetMapping

@@ -22,10 +22,10 @@ import java.util.List;
 @AllArgsConstructor
 @Tag(name = "MenuController", description = "Controller for view restaurant menu")
 public class MenuController {
+
     static final String REST_URL = "/api/restaurants/";
     static final String REST_URL_MENU = "/menu";
 
-    private final MenuRepository repository;
     private final MenuService service;
 
     @GetMapping("/{id}/menu")

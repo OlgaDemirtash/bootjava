@@ -23,32 +23,31 @@ import java.util.List;
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Restaurant extends NamedEntity {
+
     @Column(name = "description", nullable = false)
     @NotBlank
     @Size(max = 256)
     @NoHtml
     private String description;
 
-//    @Column(name = "registered", nullable = false, columnDefinition = "DATE DEFAULT CURRENT_DATE", updatable = false)
-//    @NotNull
-//    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-//    private LocalDate registered;
+    @Column(name = "registered", nullable = false, columnDefinition = "DATE DEFAULT CURRENT_DATE", updatable = false)
+    @NotNull
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private LocalDate registered = LocalDate.now();
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant")//, cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant")
     @OrderBy("registered DESC")
-    @OnDelete(action = OnDeleteAction.CASCADE) //https://stackoverflow.com/a/44988100/548473
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @Schema(hidden = true)
     private List<Menu> menus;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant")//, cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant")
     @OrderBy("registered DESC")
-    @OnDelete(action = OnDeleteAction.CASCADE) //https://stackoverflow.com/a/44988100/548473
-    @Schema(hidden = true)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private List<Vote> votes;
 
     public Restaurant(Integer id, String name, String description) {
         super(id, name);
-        //this.registered = LocalDate.now();
         this.description = description;
     }
 

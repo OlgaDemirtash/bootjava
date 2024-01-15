@@ -1,6 +1,9 @@
 package ru.javaops.bootjava.service;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import lombok.AllArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
@@ -17,9 +20,8 @@ import static ru.javaops.bootjava.validation.ValidationUtil.checkNotFoundWithId;
 @Service
 @AllArgsConstructor
 public class RestaurantService {
-    private final RestaurantRepository restaurantRepository;
-    private final UserRepository userRepository;
 
+    private final RestaurantRepository restaurantRepository;
 
     public List<Restaurant> getAll() {
         return restaurantRepository.findAllByOrderByName();
@@ -44,10 +46,5 @@ public class RestaurantService {
         Assert.notNull(r, "restaurant must not be null");
         ValidationUtil.checkNew(r);
         return restaurantRepository.save(r);
-    }
-
-    public void delete(int id) {
-        Assert.notNull(id, "restaurant must not be null");
-        restaurantRepository.deleteExisted(id);
     }
 }

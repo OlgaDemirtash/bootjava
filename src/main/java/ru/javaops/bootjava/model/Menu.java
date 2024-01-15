@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.Date;
 
 @Entity
 @Getter
@@ -16,10 +17,11 @@ import java.time.LocalDate;
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Menu extends NamedEntity {
+
     @Column(name = "registered", nullable = false, columnDefinition = "DATE DEFAULT CURRENT_DATE", updatable = false)
     @NotNull
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    private LocalDate registered;
+    private LocalDate registered = LocalDate.now();
 
     @ManyToOne
     @JoinColumn(name = "restaurant_id", referencedColumnName = "id", nullable = false)
@@ -31,7 +33,6 @@ public class Menu extends NamedEntity {
 
     public Menu(Integer id, String name, Restaurant restaurant, Integer price) {
         super(id, name);
-        this.registered = LocalDate.now();
         this.restaurant = restaurant;
         this.price = price;
     }

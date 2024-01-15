@@ -20,5 +20,4 @@ public interface RestaurantRepository extends BaseRepository<Restaurant> {
     List<Restaurant> findAllRestaurantsWithVote();
 
     List<Restaurant> findByMenus_RegisteredOrderByName(@Param("registered") LocalDate registered);
-
 }

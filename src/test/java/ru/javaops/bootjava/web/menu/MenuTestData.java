@@ -7,13 +7,8 @@ import static ru.javaops.bootjava.web.restaurant.RestaurantTestData.*;
 
 public class MenuTestData {
 
-    public static final MatcherFactory.Matcher<Menu> MENU_MATCHER = MatcherFactory.usingIgnoringFieldsComparator(Menu.class);
-    public static final int MENU_ID_1 = 100005;
-    public static final int MENU_ID_2 = 100006;
-    public static final int MENU_ID_3 = 100007;
-
+    public static final MatcherFactory.Matcher<Menu> MENU_MATCHER = MatcherFactory.usingIgnoringFieldsComparator(Menu.class, "restaurant.votes", "restaurant.menus");
     public static final int NOT_FOUND = 100;
-
     public static final int MENU_1_RESTAURANT_ID = 100005;
     public static final Integer MENU_1_POSITION_1_ID = 100017;
     public static final Integer MENU_1_POSITION_2_ID = 100018;

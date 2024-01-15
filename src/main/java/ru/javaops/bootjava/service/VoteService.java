@@ -21,11 +21,14 @@ import java.time.LocalTime;
 @Service
 @AllArgsConstructor
 public class VoteService {
-    private final VoteRepository repository;
-    private final MenuRepository menuRepository;
-    private final UserRepository userRepository;
-    private final RestaurantRepository restaurantRepository;
 
+    private final VoteRepository repository;
+
+    private final MenuRepository menuRepository;
+
+    private final UserRepository userRepository;
+
+    private final RestaurantRepository restaurantRepository;
 
     public Vote getForUser(int id, int userId) {
         return repository.findByIdAndUserId(id, userId).orElseThrow(() -> new NotFoundException("Vote with " + id + " not found for user" + userId));
@@ -42,19 +45,20 @@ public class VoteService {
         if (!VotesUtil.checkVoteTime(vote)) {
             throw new DataConflictException("Voting time has already passed for user" + userId + "and restaurant" + restaurantId);
         }
-        if (menuRepository.existsByRestaurantIdAndRegistered(restaurantId, LocalDate.now())) {
+        if (!menuRepository.existsByRestaurantIdAndRegistered(restaurantId, LocalDate.now())) {
             throw new DataConflictException("There is no menu for the restaurant " + restaurantId + "on the current date.");
         }
         repository.save(vote);
     }
 
+    @Transactional
     public Vote create(VoteTo voteTo, int userId) {
         Assert.notNull(voteTo, "vote must not be null");
         ValidationUtil.checkNew(voteTo);
         int restaurantId = voteTo.getRestaurantId();
         Vote vote = new Vote(null, LocalDate.now(), userRepository.getReferenceById(userId), restaurantRepository.getReferenceById(restaurantId));
-        if (menuRepository.existsByRestaurantIdAndRegistered(restaurantId, LocalDate.now())) {
-            throw new DataConflictException("There is no menu for the restaurant " + restaurantId + "on the current date.");
+        if (!menuRepository.existsByRestaurantIdAndRegistered(restaurantId, LocalDate.now())) {
+            throw new DataConflictException("There is no menu for the restaurant " + restaurantId + " on the current date.");
         }
         return repository.save(vote);
     }

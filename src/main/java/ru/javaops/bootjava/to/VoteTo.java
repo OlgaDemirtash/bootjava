@@ -13,9 +13,6 @@ import java.time.LocalDate;
 public class VoteTo extends BaseEntity {
 
     @NotNull
-    private LocalDate registered;
-
-    @NotNull
     private int restaurantId;
 
     @ConstructorProperties({"id", "restaurant"})

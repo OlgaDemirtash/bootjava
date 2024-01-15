@@ -53,7 +53,6 @@ class AdminMenuControllerTest extends AbstractControllerTest {
                 .andExpect(MENU_MATCHER.contentJson(menu1_position_1));
     }
 
-
     @Test
     @WithUserDetails(value = ADMIN_MAIL)
     void delete() throws Exception {

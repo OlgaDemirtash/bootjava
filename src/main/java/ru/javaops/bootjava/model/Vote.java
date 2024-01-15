@@ -3,10 +3,9 @@ package ru.javaops.bootjava.model;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -22,22 +21,21 @@ public class Vote extends BaseEntity {
     @Column(name = "registered", nullable = false, columnDefinition = "DATE DEFAULT CURRENT_DATE", updatable = false)
     @NotNull
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    private LocalDate registered;
+    private LocalDate registered = LocalDate.now();
 
     @Column(name = "registered_time", nullable = false, columnDefinition = "TIME DEFAULT CURRENT_DATE", updatable = false)
     @NotNull
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    private LocalTime registeredTime;
+    private LocalTime registeredTime = LocalTime.now();
 
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
     private User user;
 
-    @ManyToOne
     @NotNull
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "restaurant_id", referencedColumnName = "id", nullable = false)
     private Restaurant restaurant;
-
 
     public Vote(Integer id, @NotNull LocalDate registered, User user, Restaurant restaurant) {
         super(id);
