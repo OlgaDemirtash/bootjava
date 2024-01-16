@@ -37,4 +37,15 @@ class ProfileRestaurantControllerTest extends AbstractControllerTest {
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(RESTAURANT_MATCHER.contentJson(restaurant3, restaurant2, restaurant1));
     }
+
+    @Test
+    @WithUserDetails(value = USER_MAIL)
+    void getAllWithMenus() throws Exception {
+        perform(MockMvcRequestBuilders.get(REST_URL + "/menus"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(RESTAURANT_MATCHER.contentJson(restaurant3, restaurant2, restaurant1));
+    }
+
+
 }

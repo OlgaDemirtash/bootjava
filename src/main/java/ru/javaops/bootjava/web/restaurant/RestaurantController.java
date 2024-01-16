@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.javaops.bootjava.model.Restaurant;
+import ru.javaops.bootjava.repository.RestaurantRepository;
 import ru.javaops.bootjava.service.RestaurantService;
 import ru.javaops.bootjava.web.AuthUser;
 
@@ -25,10 +26,22 @@ public class RestaurantController {
 
     private final RestaurantService service;
 
+    private final RestaurantRepository repository;
     @GetMapping
     @Operation(summary = "Get all restaurants", description = "Restaurant list will be provided")
     public List<Restaurant> getAll(@AuthenticationPrincipal AuthUser authUser) {
         log.info("getAll for user {}", authUser.id());
-        return service.getAll();
+        List<Restaurant> rlist =  service.getAll();
+        return rlist;
+
+    }
+
+
+    @GetMapping("/menus")
+    @Operation(summary = "Get all restaurants with menu", description = "Restaurant list with menu will be provided")
+    public List<Restaurant> getAllWithMenu(@AuthenticationPrincipal AuthUser authUser) {
+        log.info("getAll for user {}", authUser.id());
+        List<Restaurant> rlist =  service.getAllWithMenu();
+        return rlist;
     }
 }

@@ -143,6 +143,7 @@ class AdminRestaurantControllerTest extends AbstractControllerTest {
 
     @Test
     @WithUserDetails(value = ADMIN_MAIL)
+    @Transactional(propagation = Propagation.NEVER)
     void createDuplicate() throws Exception {
         Restaurant invalid = new Restaurant(null, RESTAURANT_NAME_3, RESTAURANT_DESCRIPTION_3);
         perform(MockMvcRequestBuilders.post(REST_URL)

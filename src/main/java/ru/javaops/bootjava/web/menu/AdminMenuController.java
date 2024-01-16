@@ -32,6 +32,7 @@ import static ru.javaops.bootjava.validation.ValidationUtil.assureIdConsistent;
 @Tag(name = "AdminMenuController", description = "Controller for edit restaurant menu")
 public class AdminMenuController {
     static final String REST_URL = "/api/admin/menu";
+    static final String REST_URL_MENU = "/menus";
     private final MenuRepository repository;
     private final RestaurantRepository restaurantRepository;
     private final MenuService service;

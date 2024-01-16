@@ -24,11 +24,11 @@ import java.util.List;
 public class MenuController {
 
     static final String REST_URL = "/api/restaurants/";
-    static final String REST_URL_MENU = "/menu";
+    static final String REST_URL_MENU = "/menus";
 
     private final MenuService service;
 
-    @GetMapping("/{id}/menu")
+    @GetMapping("/{id}" + REST_URL_MENU)
     @Operation(summary = "Get current menu for the restaurant ID", description = "Provide an restaurant ID to get restaurant menu details")
     public List<Menu> getCurrentMenu(@PathVariable int id) {
         log.info("get menu for today");

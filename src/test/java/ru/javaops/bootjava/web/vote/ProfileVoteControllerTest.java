@@ -8,6 +8,7 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import ru.javaops.bootjava.model.Vote;
 import ru.javaops.bootjava.repository.VoteRepository;
 import ru.javaops.bootjava.to.VoteTo;
 import ru.javaops.bootjava.util.JsonUtil;
@@ -32,8 +33,9 @@ class ProfileVoteControllerTest extends AbstractControllerTest {
     @Test
     @WithUserDetails(value = USER_MAIL)
     void update() throws Exception {
-        VoteTo updated = VotesUtil.createTo(vote1ForUser1);
-        updated.setRestaurantId(restaurant3.getId());
+        Vote updatedVote = vote1ForUser1;
+        updatedVote.setRestaurant(restaurant3);
+        VoteTo updated = VotesUtil.createTo(updatedVote);
         perform(MockMvcRequestBuilders.put(REST_URL_SLASH + VOTE1_USER1_ID)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.writeValue(updated)))

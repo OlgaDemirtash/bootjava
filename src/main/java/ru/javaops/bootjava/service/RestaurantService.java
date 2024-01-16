@@ -28,7 +28,7 @@ public class RestaurantService {
     }
 
     public List<Restaurant> getAllWithMenu() {
-        return restaurantRepository.findAllRestaurantsWithMenu();
+        return restaurantRepository.findAllRestaurantsWithMenuByOrderByName();
     }
 
     public List<Restaurant> getAllWithMenuOnDate(LocalDate menuDate) {

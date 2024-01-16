@@ -1,5 +1,6 @@
 package ru.javaops.bootjava.repository;
 
+import jakarta.persistence.OrderBy;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,8 +14,7 @@ public interface RestaurantRepository extends BaseRepository<Restaurant> {
 
     List<Restaurant> findAllByOrderByName();
 
-    @Query("SELECT r, m FROM Restaurant r JOIN Menu m ON r.id = m.restaurant.id ORDER BY r.name DESC, m.registered DESC, m.id DESC")
-    List<Restaurant> findAllRestaurantsWithMenu();
+    List<Restaurant> findAllRestaurantsWithMenuByOrderByName();
 
     @Query("SELECT r, m FROM Restaurant r JOIN Vote m ON r.id = m.restaurant.id")
     List<Restaurant> findAllRestaurantsWithVote();
