@@ -1,6 +1,6 @@
 package ru.javaops.bootjava.repository;
 
-import jakarta.persistence.OrderBy;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,10 +14,13 @@ public interface RestaurantRepository extends BaseRepository<Restaurant> {
 
     List<Restaurant> findAllByOrderByName();
 
+    @EntityGraph(value = "graph.RestaurantWithMenus", type = EntityGraph.EntityGraphType.LOAD)
     List<Restaurant> findAllRestaurantsWithMenuByOrderByName();
 
-    @Query("SELECT r, m FROM Restaurant r JOIN Vote m ON r.id = m.restaurant.id")
-    List<Restaurant> findAllRestaurantsWithVote();
+    @EntityGraph(value = "graph.RestaurantWithVotes", type = EntityGraph.EntityGraphType.LOAD)
+    List<Restaurant> findAllRestaurantsWithVoteByOrderByName();
 
-    List<Restaurant> findByMenus_RegisteredOrderByName(@Param("registered") LocalDate registered);
+    @EntityGraph(value = "graph.RestaurantWithMenus", type = EntityGraph.EntityGraphType.LOAD)
+    @Query("SELECT r FROM Restaurant r LEFT JOIN FETCH r.menus m WHERE m.registered = :registered ORDER BY r.name")
+    List<Restaurant> findAllRestaurantsWithMenuByMenu_RegisteredOrderByName(@Param("registered") LocalDate registered);
 }

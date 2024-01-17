@@ -1,15 +1,11 @@
 package ru.javaops.bootjava.service;
 
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
 import lombok.AllArgsConstructor;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 import ru.javaops.bootjava.model.Restaurant;
 import ru.javaops.bootjava.repository.RestaurantRepository;
-import ru.javaops.bootjava.repository.UserRepository;
 import ru.javaops.bootjava.validation.ValidationUtil;
 
 import java.time.LocalDate;
@@ -31,8 +27,12 @@ public class RestaurantService {
         return restaurantRepository.findAllRestaurantsWithMenuByOrderByName();
     }
 
-    public List<Restaurant> getAllWithMenuOnDate(LocalDate menuDate) {
-        return restaurantRepository.findByMenus_RegisteredOrderByName(menuDate);
+    public List<Restaurant> getAllWithVotes() {
+        return restaurantRepository.findAllRestaurantsWithVoteByOrderByName();
+    }
+
+    public List<Restaurant> getAllWithMenuByDate(LocalDate menuDate) {
+        return restaurantRepository.findAllRestaurantsWithMenuByMenu_RegisteredOrderByName(menuDate);
     }
 
     @Transactional

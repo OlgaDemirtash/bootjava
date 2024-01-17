@@ -14,6 +14,7 @@ import ru.javaops.bootjava.repository.RestaurantRepository;
 import ru.javaops.bootjava.service.RestaurantService;
 import ru.javaops.bootjava.web.AuthUser;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -31,17 +32,27 @@ public class RestaurantController {
     @Operation(summary = "Get all restaurants", description = "Restaurant list will be provided")
     public List<Restaurant> getAll(@AuthenticationPrincipal AuthUser authUser) {
         log.info("getAll for user {}", authUser.id());
-        List<Restaurant> rlist =  service.getAll();
-        return rlist;
-
+        return service.getAll();
     }
 
+    @GetMapping("/all-menus")
+    @Operation(summary = "Get all restaurants with menu", description = "Restaurant list with menu will be provided")
+    public List<Restaurant> getAllWithMenu(@AuthenticationPrincipal AuthUser authUser) {
+        log.info("getAllWithMenu for user {}", authUser.id());
+        return service.getAllWithMenu();
+    }
 
     @GetMapping("/menus")
     @Operation(summary = "Get all restaurants with menu", description = "Restaurant list with menu will be provided")
-    public List<Restaurant> getAllWithMenu(@AuthenticationPrincipal AuthUser authUser) {
-        log.info("getAll for user {}", authUser.id());
-        List<Restaurant> rlist =  service.getAllWithMenu();
-        return rlist;
+    public List<Restaurant> getAllWithMenuByDate(@AuthenticationPrincipal AuthUser authUser) {
+        log.info("getAllWithMenu for user {}", authUser.id());
+        return service.getAllWithMenuByDate(LocalDate.now());
+    }
+
+    @GetMapping("/votes")
+    @Operation(summary = "Get all restaurants with votes", description = "Restaurant list with votes will be provided")
+    public List<Restaurant> getAllWithVotes(@AuthenticationPrincipal AuthUser authUser) {
+        log.info("getAllWithVotes for user {}", authUser.id());
+        return service.getAllWithVotes();
     }
 }

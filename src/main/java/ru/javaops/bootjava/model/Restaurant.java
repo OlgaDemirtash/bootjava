@@ -10,7 +10,6 @@ import lombok.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import ru.javaops.bootjava.validation.NoHtml;
-
 import java.time.LocalDate;
 import java.util.List;
 
@@ -19,6 +18,9 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NamedEntityGraph(name = "graph.RestaurantWithMenus", attributeNodes = @NamedAttributeNode("menus"))
+@NamedEntityGraph(name = "graph.RestaurantWithVotes", attributeNodes = @NamedAttributeNode("votes"))
+
 @ToString(exclude = {"menus","votes"})
 public class Restaurant extends NamedEntity {
 
@@ -49,5 +51,4 @@ public class Restaurant extends NamedEntity {
         super(id, name);
         this.description = description;
     }
-
 }
