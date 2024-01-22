@@ -19,7 +19,6 @@ import java.time.LocalDate;
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @NamedEntityGraph(name = "graph.menuItemWithRestaurant", attributeNodes = @NamedAttributeNode("restaurant"))
-
 public class MenuItem extends NamedEntity {
 
     @Column(name = "issued", nullable = false, columnDefinition = "DATE DEFAULT CURRENT_DATE", updatable = false)

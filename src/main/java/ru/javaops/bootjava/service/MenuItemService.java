@@ -29,8 +29,8 @@ public class MenuItemService {
         return repository.findAllByRestaurantId(restaurantId);
     }
 
-    public List<MenuItem> getAllBetween(LocalDate start, LocalDate end) {
-        return repository.findAllByIssuedGreaterThanEqualAndIssuedLessThanEqual(start, end);
+    public List<MenuItem> getAllBetween(int id, LocalDate start, LocalDate end) {
+        return repository.findAllByRestaurantIdAndIssuedGreaterThanEqualAndIssuedLessThanEqual(id, start, end);
     }
 
     @Transactional

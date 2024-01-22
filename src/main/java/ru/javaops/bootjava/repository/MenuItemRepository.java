@@ -18,7 +18,7 @@ public interface MenuItemRepository extends BaseRepository<MenuItem> {
 
     List<MenuItem> findAllByRestaurantId(int restaurant_id);
 
-    List<MenuItem> findAllByIssuedGreaterThanEqualAndIssuedLessThanEqual(LocalDate start, LocalDate end);
+    List<MenuItem> findAllByRestaurantIdAndIssuedGreaterThanEqualAndIssuedLessThanEqual(int restaurantId, LocalDate start, LocalDate end);
 
     boolean existsByRestaurantIdAndIssued(int restaurantId, LocalDate issued);
 

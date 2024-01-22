@@ -85,6 +85,19 @@ public class AdminMenuItemControllerTest extends AbstractControllerTest {
 
     @Test
     @WithUserDetails(value = ADMIN_MAIL)
+    void getAllBetween() throws Exception {
+        perform(MockMvcRequestBuilders.get(REST_URL_SLASH + MENU_4_RESTAURANT_ID + "/filter")
+                .param("restaurantId", "1000005")
+                .param("startDate", "2024-01-07")
+                .param("endDate", "2024-01-07"))
+                .andExpect(status().isOk())
+                .andDo(print())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(MENU_MATCHER_2.contentJson(MENU_4_ITEM_1, MENU_4_ITEM_2, MENU_4_ITEM_3));
+    }
+
+    @Test
+    @WithUserDetails(value = ADMIN_MAIL)
     void createWithLocation() throws Exception {
         MenuItemTo newMenuItemTo = MenuItemUtil.createTo(getNew());
         ResultActions action = perform(MockMvcRequestBuilders.post(REST_URL)

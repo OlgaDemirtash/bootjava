@@ -11,6 +11,7 @@ import static ru.javaops.bootjava.web.restaurant.RestaurantTestData.*;
 public class MenuItemTestData {
 
     public static final MatcherFactory.Matcher<MenuItem> MENU_MATCHER = MatcherFactory.usingIgnoringFieldsComparator(MenuItem.class, "restaurant.votes", "restaurant.menuItems");
+    public static final MatcherFactory.Matcher<MenuItem> MENU_MATCHER_2 = MatcherFactory.usingEqualsComparator(MenuItem.class);
     public static final MatcherFactory.Matcher<MenuItemTo> MENU_TO_MATCHER = MatcherFactory.usingIgnoringFieldsComparator(MenuItemTo.class);
     public static final int NOT_FOUND = 100;
 

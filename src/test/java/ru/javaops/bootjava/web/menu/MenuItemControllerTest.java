@@ -33,16 +33,4 @@ public class MenuItemControllerTest extends AbstractControllerTest {
         perform(MockMvcRequestBuilders.get(REST_URL_SLASH + MENU_1_RESTAURANT_ID))
                 .andExpect(status().isUnauthorized());
     }
-
-    @Test
-    @WithUserDetails(value = USER_MAIL)
-    void getAllBetween() throws Exception {
-        perform(MockMvcRequestBuilders.get(REST_URL_SLASH + "filter")
-                .param("startDate", "2024-01-07")
-                .param("endDate", "2024-01-07"))
-                .andExpect(status().isOk())
-                .andDo(print())
-                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(MENU_MATCHER.contentJson(MENU_4_ITEM_1, MENU_4_ITEM_2, MENU_4_ITEM_3));
-    }
 }

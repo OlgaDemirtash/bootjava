@@ -57,7 +57,7 @@ public class VoteController {
         service.update(voteTo, authUser.id());
     }
 
-    @GetMapping("-all")
+    @GetMapping("history")
     public List<VoteTo> getAll(@AuthenticationPrincipal AuthUser authUser) {
         log.info("get all votes for user {}", authUser.id());
         return VotesUtil.getTos(repository.findAllWithRestaurantByUserId(authUser.id()));

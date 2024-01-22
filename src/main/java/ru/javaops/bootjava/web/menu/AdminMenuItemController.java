@@ -5,9 +5,11 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.Nullable;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -20,7 +22,11 @@ import ru.javaops.bootjava.validation.ValidationUtil;
 import ru.javaops.bootjava.web.AuthUser;
 
 import java.net.URI;
+import java.time.LocalDate;
+import java.util.List;
 
+import static ru.javaops.bootjava.util.DateTimeUtil.dayOrMax;
+import static ru.javaops.bootjava.util.DateTimeUtil.dayOrMin;
 import static ru.javaops.bootjava.validation.ValidationUtil.assureIdConsistent;
 
 @RestController
@@ -69,5 +75,16 @@ public class AdminMenuItemController {
         log.info("update menu item ID {} by user {}", id, userId);
         assureIdConsistent(menuItem, id);
         repository.prepareAndSave(menuItem);
+    }
+
+    @GetMapping("/{id}/filter")
+    @Operation(summary = "Get menu items between start/end", description = "Provide restaurant id, startDate, endDate")
+    public List<MenuItem> getBetween(@AuthenticationPrincipal AuthUser authUser,
+                                     @PathVariable int id,
+                                     @RequestParam @Nullable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+                                     @RequestParam @Nullable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate) {
+        int userId = authUser.id();
+        log.info("getBetween dates({} - {}) for user {}", startDate, endDate, userId);
+        return service.getAllBetween(id, dayOrMin(startDate), dayOrMax(endDate));
     }
 }

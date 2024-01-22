@@ -4,21 +4,17 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.MediaType;
-import org.springframework.lang.Nullable;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import ru.javaops.bootjava.model.MenuItem;
 import ru.javaops.bootjava.repository.MenuItemRepository;
 import ru.javaops.bootjava.service.MenuItemService;
-import ru.javaops.bootjava.web.AuthUser;
 
 import java.time.LocalDate;
 import java.util.List;
-
-import static ru.javaops.bootjava.util.DateTimeUtil.dayOrMax;
-import static ru.javaops.bootjava.util.DateTimeUtil.dayOrMin;
 
 
 @RestController
@@ -46,14 +42,5 @@ public class MenuItemController {
     public List<MenuItem> getAllMenu(@PathVariable int id) {
         log.info("get all menu items");
         return service.getAll(id);
-    }
-
-    @GetMapping("/filter")
-    public List<MenuItem> getBetween(@AuthenticationPrincipal AuthUser authUser,
-                                     @RequestParam @Nullable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
-                                     @RequestParam @Nullable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate) {
-        int userId = authUser.id();
-        log.info("getBetween dates({} - {}) for user {}", startDate, endDate, userId);
-        return repository.findAllByIssuedGreaterThanEqualAndIssuedLessThanEqual(dayOrMin(startDate), dayOrMax(endDate));
     }
 }
