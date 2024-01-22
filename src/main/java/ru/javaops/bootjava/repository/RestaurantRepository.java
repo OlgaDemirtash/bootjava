@@ -1,5 +1,6 @@
 package ru.javaops.bootjava.repository;
 
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -11,16 +12,13 @@ import java.util.List;
 
 @Transactional(readOnly = true)
 public interface RestaurantRepository extends BaseRepository<Restaurant> {
-
+    @Cacheable("restaurants")
     List<Restaurant> findAllByOrderByName();
 
-    @EntityGraph(value = "graph.RestaurantWithMenus", type = EntityGraph.EntityGraphType.LOAD)
-    List<Restaurant> findAllRestaurantsWithMenuByOrderByName();
+    @EntityGraph(value = "graph.RestaurantWithMenuItems", type = EntityGraph.EntityGraphType.LOAD)
+    List<Restaurant> findAllRestaurantsWithMenuItemByOrderByName();
 
-    @EntityGraph(value = "graph.RestaurantWithVotes", type = EntityGraph.EntityGraphType.LOAD)
-    List<Restaurant> findAllRestaurantsWithVoteByOrderByName();
-
-    @EntityGraph(value = "graph.RestaurantWithMenus", type = EntityGraph.EntityGraphType.LOAD)
-    @Query("SELECT r FROM Restaurant r LEFT JOIN FETCH r.menus m WHERE m.registered = :registered ORDER BY r.name")
-    List<Restaurant> findAllRestaurantsWithMenuByMenu_RegisteredOrderByName(@Param("registered") LocalDate registered);
+    @EntityGraph(value = "graph.RestaurantWithMenuItems", type = EntityGraph.EntityGraphType.LOAD)
+    @Query("SELECT r FROM Restaurant r LEFT JOIN FETCH r.menuItems m WHERE m.issued = :issued ORDER BY r.name")
+    List<Restaurant> findAllWithMenuItemsByMenuIssued(@Param("issued") LocalDate issued);
 }

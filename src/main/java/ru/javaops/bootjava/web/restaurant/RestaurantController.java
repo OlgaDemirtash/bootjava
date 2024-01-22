@@ -24,10 +24,11 @@ import java.util.List;
 @Tag(name = "RestaurantController", description = "Controller for view restaurants")
 public class RestaurantController {
     static final String REST_URL = "/api/profile/restaurants";
-
+    static final String REST_MENU_ITEMS = "/with-menu-items";
     private final RestaurantService service;
 
     private final RestaurantRepository repository;
+
     @GetMapping
     @Operation(summary = "Get all restaurants", description = "Restaurant list will be provided")
     public List<Restaurant> getAll(@AuthenticationPrincipal AuthUser authUser) {
@@ -35,24 +36,10 @@ public class RestaurantController {
         return service.getAll();
     }
 
-    @GetMapping("/all-menus")
-    @Operation(summary = "Get all restaurants with menu", description = "Restaurant list with menu will be provided")
-    public List<Restaurant> getAllWithMenu(@AuthenticationPrincipal AuthUser authUser) {
+    @GetMapping(REST_MENU_ITEMS)
+    @Operation(summary = "Get all restaurants with current menu", description = "Restaurant list with menu will be provided")
+    public List<Restaurant> getAllWithCurrentMenuItems(@AuthenticationPrincipal AuthUser authUser) {
         log.info("getAllWithMenu for user {}", authUser.id());
-        return service.getAllWithMenu();
-    }
-
-    @GetMapping("/menus")
-    @Operation(summary = "Get all restaurants with menu", description = "Restaurant list with menu will be provided")
-    public List<Restaurant> getAllWithMenuByDate(@AuthenticationPrincipal AuthUser authUser) {
-        log.info("getAllWithMenu for user {}", authUser.id());
-        return service.getAllWithMenuByDate(LocalDate.now());
-    }
-
-    @GetMapping("/votes")
-    @Operation(summary = "Get all restaurants with votes", description = "Restaurant list with votes will be provided")
-    public List<Restaurant> getAllWithVotes(@AuthenticationPrincipal AuthUser authUser) {
-        log.info("getAllWithVotes for user {}", authUser.id());
-        return service.getAllWithVotes();
+        return service.getAllWithMenuItemsByDate(LocalDate.now());
     }
 }

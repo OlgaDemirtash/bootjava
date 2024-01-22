@@ -3,6 +3,8 @@ package ru.javaops.bootjava.web.user;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -36,6 +38,7 @@ public class AdminUserController extends AbstractUserController {
     @Override
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @CacheEvict(value = "users", key = "#id")
     @Operation(summary = "Delete user by ID", description = "Provide user ID for deletion")
     public void delete(@PathVariable int id) {
         super.delete(id);
@@ -50,6 +53,7 @@ public class AdminUserController extends AbstractUserController {
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Create user", description = "Provide user details")
+    @CachePut(value = "users", key = "#result.body.id")
     public ResponseEntity<User> createWithLocation(@Valid @RequestBody User user) {
         log.info("create {}", user);
         checkNew(user);
@@ -62,11 +66,12 @@ public class AdminUserController extends AbstractUserController {
 
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @CachePut(value = "users", key = "#id")
     @Operation(summary = "Update user", description = "Provide user details,user ID")
-    public void update(@Valid @RequestBody User user, @PathVariable int id) {
+    public User update(@Valid @RequestBody User user, @PathVariable int id) {
         log.info("update {} with id={}", user, id);
         assureIdConsistent(user, id);
-        repository.prepareAndSave(user);
+        return repository.prepareAndSave(user);
     }
 
     @GetMapping("/by-email")
@@ -79,10 +84,12 @@ public class AdminUserController extends AbstractUserController {
     @PatchMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @Transactional
+    @CachePut(value = "users", key = "#id")
     @Operation(summary = "Enable user", description = "Provide user ID and enable status (true/false)")
-    public void enable(@PathVariable int id, @RequestParam boolean enabled) {
+    public User enable(@PathVariable int id, @RequestParam boolean enabled) {
         log.info(enabled ? "enable {}" : "disable {}", id);
         User user = repository.getExisted(id);
         user.setEnabled(enabled);
+        return user;
     }
 }

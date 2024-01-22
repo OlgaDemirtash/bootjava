@@ -6,7 +6,7 @@ import ru.javaops.bootjava.web.MatcherFactory;
 import java.time.LocalDate;
 
 public class RestaurantTestData {
-    public static final MatcherFactory.Matcher<Restaurant> RESTAURANT_MATCHER = MatcherFactory.usingIgnoringFieldsComparator(Restaurant.class, "menus", "votes", "registered");
+    public static final MatcherFactory.Matcher<Restaurant> RESTAURANT_MATCHER = MatcherFactory.usingIgnoringFieldsComparator(Restaurant.class, "menuItems", "votes", "registered");
     public static final int RESTAURANT_ID_1 = 100005;
     public static final int RESTAURANT_ID_2 = 100006;
     public static final int RESTAURANT_ID_3 = 100007;

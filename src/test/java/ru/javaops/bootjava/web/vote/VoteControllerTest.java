@@ -24,7 +24,7 @@ import static ru.javaops.bootjava.web.user.UserTestData.user;
 import static ru.javaops.bootjava.web.vote.VoteController.REST_URL;
 import static ru.javaops.bootjava.web.vote.VoteTestData.*;
 
-class ProfileVoteControllerTest extends AbstractControllerTest {
+public class VoteControllerTest extends AbstractControllerTest {
     private static final String REST_URL_SLASH = REST_URL + '/';
 
     @Autowired

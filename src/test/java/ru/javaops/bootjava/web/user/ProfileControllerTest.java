@@ -20,7 +20,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static ru.javaops.bootjava.web.user.ProfileController.REST_URL;
 import static ru.javaops.bootjava.web.user.UserTestData.*;
 
-class ProfileControllerTest extends AbstractControllerTest {
+public class ProfileControllerTest extends AbstractControllerTest {
 
     @Autowired
     private UserRepository repository;

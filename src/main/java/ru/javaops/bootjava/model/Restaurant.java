@@ -10,18 +10,18 @@ import lombok.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import ru.javaops.bootjava.validation.NoHtml;
+
 import java.time.LocalDate;
 import java.util.List;
 
 @Entity
-@Table(name = "restaurant",  uniqueConstraints = @UniqueConstraint(name = "unique_restaurant_name", columnNames = {"name"}))
+@Table(name = "restaurant", uniqueConstraints = @UniqueConstraint(name = "unique_restaurant_name", columnNames = {"name"}))
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@NamedEntityGraph(name = "graph.RestaurantWithMenus", attributeNodes = @NamedAttributeNode("menus"))
+@NamedEntityGraph(name = "graph.RestaurantWithMenuItems", attributeNodes = @NamedAttributeNode("menuItems"))
 @NamedEntityGraph(name = "graph.RestaurantWithVotes", attributeNodes = @NamedAttributeNode("votes"))
-
-@ToString(exclude = {"menus","votes"})
+@ToString(exclude = {"menuItems", "votes"})
 public class Restaurant extends NamedEntity {
 
     @Column(name = "description", nullable = false)
@@ -36,10 +36,10 @@ public class Restaurant extends NamedEntity {
     private LocalDate registered = LocalDate.now();
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant")
-    @OrderBy("registered DESC")
+    @OrderBy("issued DESC")
     @OnDelete(action = OnDeleteAction.CASCADE)
     @Schema(hidden = true)
-    private List<Menu> menus;
+    private List<MenuItem> menuItems;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant")
     @OrderBy("registered DESC")

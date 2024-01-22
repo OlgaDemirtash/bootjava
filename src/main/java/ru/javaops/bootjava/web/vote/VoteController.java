@@ -19,6 +19,7 @@ import ru.javaops.bootjava.util.VotesUtil;
 import ru.javaops.bootjava.web.AuthUser;
 
 import java.net.URI;
+import java.util.List;
 
 import static ru.javaops.bootjava.validation.ValidationUtil.assureIdConsistent;
 import static ru.javaops.bootjava.validation.ValidationUtil.checkNew;
@@ -54,5 +55,17 @@ public class VoteController {
         log.info("update {} with id={}", voteTo, id);
         assureIdConsistent(voteTo, id);
         service.update(voteTo, authUser.id());
+    }
+
+    @GetMapping("-all")
+    public List<VoteTo> getAll(@AuthenticationPrincipal AuthUser authUser) {
+        log.info("get all votes for user {}", authUser.id());
+        return VotesUtil.getTos(repository.findAllWithRestaurantByUserId(authUser.id()));
+    }
+
+    @GetMapping
+    public VoteTo get(@AuthenticationPrincipal AuthUser authUser) {
+        log.info("get current vote for user {}", authUser.id());
+        return service.getCurrentVote(authUser.id());
     }
 }

@@ -17,7 +17,7 @@ public abstract class BaseEntity implements HasId {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "GLOBAL_SEQUENCE")
     @SequenceGenerator(name = "GLOBAL_SEQUENCE", sequenceName = "GLOBAL_SEQUENCE_1", allocationSize = 1, initialValue = 100001)
-    @Column(name = "id", unique = true, nullable = false, columnDefinition = "integer default nextval('GLOBAL_SEQUENCE_1')")
+    @Column(name = "id", unique = true, nullable = false, columnDefinition = "INTEGER DEFAULT NEXTVAL('GLOBAL_SEQUENCE_1')")
     @Schema(accessMode = Schema.AccessMode.READ_ONLY) // https://stackoverflow.com/a/28025008/548473
     protected Integer id;
 

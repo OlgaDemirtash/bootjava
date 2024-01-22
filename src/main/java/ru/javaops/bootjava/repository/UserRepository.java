@@ -1,5 +1,6 @@
 package ru.javaops.bootjava.repository;
 
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
 import ru.javaops.bootjava.error.NotFoundException;
@@ -21,6 +22,7 @@ public interface UserRepository extends BaseRepository<User> {
         return save(user);
     }
 
+    @Cacheable("users")
     default User getExistedByEmail(String email) {
         return findByEmailIgnoreCase(email).orElseThrow(() -> new NotFoundException("User with email=" + email + " not found"));
     }

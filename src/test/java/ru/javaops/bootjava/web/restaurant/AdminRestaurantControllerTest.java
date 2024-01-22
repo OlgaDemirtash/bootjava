@@ -20,9 +20,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static ru.javaops.bootjava.web.restaurant.AdminRestaurantController.REST_URL;
 import static ru.javaops.bootjava.web.restaurant.RestaurantTestData.*;
 import static ru.javaops.bootjava.web.user.UserTestData.ADMIN_MAIL;
-import static ru.javaops.bootjava.web.user.UserTestData.USER_MAIL;
 
-class AdminRestaurantControllerTest extends AbstractControllerTest {
+public class AdminRestaurantControllerTest extends AbstractControllerTest {
 
     private static final String REST_URL_SLASH = REST_URL + '/';
 

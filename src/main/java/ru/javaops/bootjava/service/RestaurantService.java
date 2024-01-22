@@ -6,7 +6,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 import ru.javaops.bootjava.model.Restaurant;
 import ru.javaops.bootjava.repository.RestaurantRepository;
-import ru.javaops.bootjava.validation.ValidationUtil;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -23,16 +22,12 @@ public class RestaurantService {
         return restaurantRepository.findAllByOrderByName();
     }
 
-    public List<Restaurant> getAllWithMenu() {
-        return restaurantRepository.findAllRestaurantsWithMenuByOrderByName();
+    public List<Restaurant> getAllWithMenuItems() {
+        return restaurantRepository.findAllRestaurantsWithMenuItemByOrderByName();
     }
 
-    public List<Restaurant> getAllWithVotes() {
-        return restaurantRepository.findAllRestaurantsWithVoteByOrderByName();
-    }
-
-    public List<Restaurant> getAllWithMenuByDate(LocalDate menuDate) {
-        return restaurantRepository.findAllRestaurantsWithMenuByMenu_RegisteredOrderByName(menuDate);
+    public List<Restaurant> getAllWithMenuItemsByDate(LocalDate issued) {
+        return restaurantRepository.findAllWithMenuItemsByMenuIssued(issued);
     }
 
     @Transactional
@@ -44,7 +39,6 @@ public class RestaurantService {
     @Transactional
     public Restaurant create(Restaurant r) {
         Assert.notNull(r, "restaurant must not be null");
-        ValidationUtil.checkNew(r);
         return restaurantRepository.save(r);
     }
 }
