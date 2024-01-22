@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithUserDetails;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.transaction.annotation.Propagation;
@@ -24,7 +25,7 @@ import static ru.javaops.bootjava.web.user.UserTestData.user;
 import static ru.javaops.bootjava.web.vote.VoteController.REST_URL;
 import static ru.javaops.bootjava.web.vote.VoteTestData.*;
 
-
+@ActiveProfiles("normal")
 public class VoteControllerNormalTimeTest extends AbstractControllerTest {
     private static final String REST_URL_SLASH = REST_URL + '/';
 
